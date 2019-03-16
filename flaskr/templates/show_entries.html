@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block content %}{{session['username']+'\'s'}}{% endblock %}
+{% block body %}
+
+<div class="container" style="text-align: center;">
+  <div class="messagepop pop">
+      <form method="post" id="new_message" action="{{ url_for('do') }}">
+          <p><label for="taskname">Task Name</label><input type="text" size="30" name="title" id="taskname" /></p>
+          <p><label for="description">Description</label><textarea rows="4" name="text" id="description" cols="35"></textarea></p>
+          <input class="submit" type="submit" value="Add Task" name="commit" id="message_submit"/>
+          <a class="cancel" href="/">Cancel</a>
+      </form>
+  </div>
+  <div class="container" style="padding-bottom: 3%;">
+    <a href="/contact" id="contact">Add Task</a>
+  </div>
+</div>
+
+  <div class="container body">
+    <div class="row">
+
+    <div class="col-sm-4">
+    <h3>Do</h3>
+      <hr class="do">
+
+  <div class=entries>
+  {% for entry in do %}
+    <h2>{{ entry.title }}</h2>
+    {{ entry.text|safe }}
+    <br>
+    <form action="{{ url_for('doing') }}" method=post>
+      <input type="hidden" name="id" value="{{ entry.id }}">
+      <input type="hidden" name="title" value="{{ entry.title }}">
+      <input type="hidden" name="text" value="{{ entry.text }}">
+      <input type="submit" name="btn" value="Doing">
+    </form>
+    <form action="{{ url_for('delete') }}" method=post class=delete-entry>
+      <input type="hidden" name="id" value="{{ entry.id }}">
+      <input type="submit" value="Delete">
+    </form>
+  {% else %}
+    <em>Start adding some tasks!</em>
+  {% endfor %}
+  </div>
+
+    </div>
+
+    <div class="col-sm-4">
+    <h3>Doing</h3>
+      <hr class="doing">
+
+  <div class=entries>
+  {% for entry in doing %}
+    <h2>{{ entry.title }}</h2>
+    </form>{{ entry.text|safe }}
+    <br>
+    <form action="{{ url_for('done') }}" method=post>
+      <input type="hidden" name="id" value="{{ entry.id }}">
+      <input type="hidden" name="title" value="{{ entry.title }}">
+      <input type="hidden" name="text" value="{{ entry.text }}">
+      <input type="submit" name="btn" value="Done">
+    </form>
+    <form action="{{ url_for('delete') }}" method=post class=delete-entry>
+      <input type="hidden" name="id" value="{{ entry.id }}">
+      <input type="submit" value="Delete" />
+    </form>
+  {% else %}
+    <em>Start doing some tasks!</em>
+  {% endfor %}
+  </div>
+
+    </div>
+
+    <div class="col-sm-4">
+    <h3>Done</h3>
+      <hr class="done">
+
+  <div class=entries>
+  {% for entry in done %}
+    <h2>{{ entry.title }}</h2>{{ entry.text|safe }}
+    <form action="{{ url_for('delete') }}" method=post class=delete-entry>
+      <input type="hidden" name="id" value="{{ entry.id }}">
+      <input type="submit" value="Delete" />
+    </form>
+
+  {% else %}
+    <em>Start finishing some tasks!</em>
+  {% endfor %}
+  </div>
+
+    </div>
+
+    </div>
+  </div>
+
+{% endblock %}

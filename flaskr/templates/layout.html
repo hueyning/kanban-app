@@ -1,0 +1,89 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+    <title>Kanban</title>
+      <!-- CSS-->
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+      <link rel=stylesheet type=text/css href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <!-- Fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Yellowtail" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400" rel="stylesheet">
+</head>
+
+<body>
+<div class=container>
+  <header>
+    <h1>{% block content %}{% endblock %} Kanban!</h1>
+    <h4>Do. Doing. Done!</h4>
+    <div class=metanav>
+      {% if not session.logged_in %}
+          <a href="{{ url_for('login') }}">log in</a>
+          <a href="{{ url_for('register') }}">Register</a>
+        {% else %}
+          <a href="{{ url_for('logout') }}">log out</a>
+      {% endif %}
+</div>
+
+    <div class="container">
+      <hr class="style18">
+    </div>
+  </header>
+</div>
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span id='close' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode); return false;'>×</span></button>
+        {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+  {% block body %}
+
+  {% endblock %}
+
+<footer>
+  <div class="container">
+        <p id="tagline">Made by Ning © 2018</p>
+    </div>
+</footer>
+
+
+       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+      <script>
+      function deselect(e) {
+      $('.pop').slideFadeToggle(function() {
+        e.removeClass('selected');
+      });    
+    }
+
+    $(function() {
+      $('#contact').on('click', function() {
+        if($(this).hasClass('selected')) {
+          deselect($(this));               
+        } else {
+          $(this).addClass('selected');
+          $('.pop').slideFadeToggle();
+        }
+        return false;
+      });
+
+      $('.cancel').on('click', function() {
+        deselect($('#contact'));
+        return false;
+      });
+    });
+
+    $.fn.slideFadeToggle = function(easing, callback) {
+      return this.animate({ opacity: 'toggle', height: 'toggle' }, 'fast', easing, callback);
+    };
+  </script>
+
+</body>

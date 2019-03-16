@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+<body>
+  <div class="container">
+    <br>
+    <h4>Please Login:</h4>
+    <br>
+    <form method="post" action="/login" class="form-inline" >
+
+      <input type="text" class="form-control" placeholder = "Username" name="username">
+
+      <input type="password" class="form-control" placeholder = "Password" name="password">
+
+      <input class="btn btn-default" type="submit" value="Login">
+
+    </form>
+
+    {% if error %}
+      <p class="error"><strong>Error:</strong>{{error}}</p>
+    {% endif %}
+  </div>
+</body>
+{% endblock %}
